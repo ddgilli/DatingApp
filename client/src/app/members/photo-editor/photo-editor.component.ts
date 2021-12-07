@@ -44,13 +44,13 @@ export class PhotoEditorComponent implements OnInit {
     })
   }
 
-    /* this actually creates a new array of photos without including the one with the photoId*/
-    deletePhoto(photoId: number) {
-      this.memberService.deletePhoto(photoId).subscribe(() => {
-        this.member.photos = this.member.photos.filter(x => x.id !- photoId);
-      })
-    }
-  
+  /* this actually creates a new array of photos without including the one with the photoId*/
+  deletePhoto(photoId: number) {
+    this.memberService.deletePhoto(photoId).subscribe(() => {
+      this.member.photos = this.member.photos.filter(x => x.id !- photoId);
+    })
+  }
+
   initializeUploader() {
     this.uploader = new FileUploader({
       url: this.baseUrl + 'users/add-photo',
@@ -70,14 +70,15 @@ export class PhotoEditorComponent implements OnInit {
       if (response) {
         const photo: Photo = JSON.parse(response);
         this.member.photos.push(photo);
-        // if (photo.isMain) {
-        //   this.user.photoUrl = photo.url;
-        //   this.member.photoUrl = photo.url;
-        //   this.accountService.setCurrentUser(this.user);
-        // }
+        if (photo.isMain) {
+          this.user.photoUrl = photo.url;
+          this.member.photoUrl = photo.url;
+          this.accountService.setCurrentUser(this.user);
+        }
           
       }
     }
   }
 
+    
 }
